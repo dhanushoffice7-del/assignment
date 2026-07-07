@@ -1,0 +1,89 @@
+pipeline {
+
+    agent any
+
+    environment {
+        IMAGE_NAME = "task-tracker"
+        IMAGE_TAG = "latest"
+        CONTAINER_NAME = "task-tracker"
+    }
+
+    stages {
+
+        stage('SCM Pull') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies and Run Tests') {
+            steps {
+                sh '''
+                npm install
+                npm test
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                docker compose down || true
+                docker compose up -d --build
+                '''
+            }
+        }
+
+        stage('Curl Verification') {
+            steps {
+                sh '''
+                echo "Waiting for application..."
+                sleep 10
+
+                echo ""
+                echo "========== ROOT =========="
+                curl http://localhost:3000/
+
+                echo ""
+                echo "========== HEALTH =========="
+                curl http://localhost:3000/health
+
+                echo ""
+                echo "========== TASKS =========="
+                curl http://localhost:3000/api/tasks
+                '''
+            }
+        }
+    }
+
+    post {
+
+        always {
+
+            sh '''
+            echo "Cleaning up..."
+
+            docker compose down || true
+
+            docker image prune -f
+
+            docker container prune -f
+
+            docker system prune -f
+
+            '''
+
+            cleanWs()
+        }
+
+    }
+
+}
