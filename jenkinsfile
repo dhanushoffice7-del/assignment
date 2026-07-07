@@ -40,8 +40,8 @@ fi
         stage('Deploy') {
             steps {
                 sh '''
-                docker compose down || true
-                docker compose up -d --build
+                docker-compose down || true
+                docker-compose up -d --build
                 '''
             }
         }
@@ -75,7 +75,7 @@ fi
             sh '''
             echo "Cleaning up..."
 
-            docker compose down || true
+            docker-compose down || true
 
             docker image prune -f
 
