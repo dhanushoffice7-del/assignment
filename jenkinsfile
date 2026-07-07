@@ -75,7 +75,7 @@ fi
             sh '''
             echo "Cleaning up..."
 
-            docker-compose down || true
+            docker compose down || true
 
             docker image prune -f
 
