@@ -53,6 +53,7 @@ fi
                 '''
             }
         }
+
 stage('Wait for Application') {
     steps {
         sh '''
@@ -92,6 +93,7 @@ stage('Curl Verification') {
     }
 }
 
+}
 
     post {
 
