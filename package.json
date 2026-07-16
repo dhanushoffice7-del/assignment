@@ -1,5 +1,4 @@
 {
-{
   "name": "task-tracker-jenkins-docker",
   "version": "1.0.0",
   "description": "Starter assignment project for freshers using Jenkins and Docker",
@@ -7,8 +6,7 @@
   "scripts": {
     "start": "node app.js",
   "test": "node --test app.test.js"
-}
-  },
+},
   "keywords": [
     "jenkins",
     "docker",
