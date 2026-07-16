@@ -76,22 +76,21 @@ stage('Wait for Application') {
 stage('Curl Verification') {
     steps {
         sh '''
+        echo "========== ROOT =========="
+        curl http://localhost:3000/
 
-                echo ""
-                echo "========== ROOT =========="
-                curl http://localhost:3000/
+        echo ""
 
-                echo ""
-                echo "========== HEALTH =========="
-                curl http://localhost:3000/health
+        echo "========== HEALTH =========="
+        curl http://localhost:3000/health
 
-                echo ""
-                echo "========== TASKS =========="
-                curl http://localhost:3000/api/tasks
-                '''
-            }
-        }
+        echo ""
+
+        echo "========== TASKS =========="
+        curl http://localhost:3000/api/tasks
+        '''
     }
+}
 
     post {
 
