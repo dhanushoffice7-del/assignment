@@ -92,7 +92,7 @@ stage('Curl Verification') {
         '''
     }
 }
-}
+
 
     post {
 
