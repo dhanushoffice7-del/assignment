@@ -91,9 +91,6 @@ stage('Curl Verification') {
         curl http://localhost:3000/api/tasks
         '''
     }
-}
-
-
     post {
 
         always {
