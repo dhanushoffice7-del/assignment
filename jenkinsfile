@@ -89,26 +89,46 @@ stage('Curl Verification') {
     }
 }
 }
-    post {
+ post {
 
-        always {
+    success {
+        emailext(
+            subject: "SUCCESS: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+            body: """
+Build succeeded.
 
-            sh '''
-            echo "Cleaning up..."
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
+""",
+            to: "dhanushoffice7@gmail.com"
+        )
+    }
 
-            docker compose down || true
+    failure {
+        emailext(
+            subject: "FAILED: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+            body: """
+Build failed.
 
-            docker image prune -f
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
+""",
+            to: "dhanushoffice7@gmail.com"
+        )
+    }
 
-            docker container prune -f
+    always {
+        sh '''
+        docker stop ${CONTAINER_NAME} || true
+        docker rm ${CONTAINER_NAME} || true
+        docker image prune -f
+        docker container prune -f
+        docker system prune -f
+        '''
 
-            docker system prune -f
-
-            '''
-
-            cleanWs()
-        }
-
+        cleanWs()
     }
 }
 
