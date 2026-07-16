@@ -18,17 +18,13 @@ pipeline {
         }
 
         stage('Install Dependencies and Run Tests') {
-            steps {
-                sh '''
-npm install
-if [ -d test ]; then
-    npm test
-else
-    echo "No tests found. Skipping..."
-fi
-'''
-            }
-        }
+    steps {
+        sh '''
+        npm install
+        npm test
+        '''
+    }
+}
 
         stage('Build Docker Image') {
     steps {
