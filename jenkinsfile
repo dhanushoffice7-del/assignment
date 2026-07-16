@@ -53,11 +53,7 @@ fi
                 '''
             }
         }
-
-        stage('Curl Verification') {
-            steps {
-                sh '''
-                stage('Wait for Application') {
+stage('Wait for Application') {
     steps {
         sh '''
         for i in {1..20}
@@ -76,6 +72,10 @@ fi
         '''
     }
 }
+
+stage('Curl Verification') {
+    steps {
+        sh '''
 
                 echo ""
                 echo "========== ROOT =========="
